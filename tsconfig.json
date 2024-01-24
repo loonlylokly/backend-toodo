@@ -1,0 +1,23 @@
+{
+  "ts-node": {
+    "require": ["tsconfig-paths/register"],
+  },
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "baseUrl": "src",
+    "outDir": "build",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "paths": {
+      "types/*": ["../types/*"],
+      "src/*": ["../src/*"],
+    },
+  },
+  "include": ["src/**/*"],
+}
