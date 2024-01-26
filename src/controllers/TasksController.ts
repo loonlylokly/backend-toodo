@@ -1,4 +1,4 @@
-import { insertTaskSchema, requestSchema } from 'db/schema';
+import { insertTaskSchema, requestSchema, selectTaskSchema } from 'db/schema';
 import { type Request, Response } from 'express';
 import TasksService from 'services/TasksService';
 
@@ -35,10 +35,8 @@ class TaskController {
 
   async update(req: Request, res: Response) {
     try {
-      const task = req.body;
-      task.id = Number.parseInt(task.id);
       const updatedTask = await TasksService.update(
-        insertTaskSchema.parse(task)
+        selectTaskSchema.parse(req.body)
       );
       return res.json(updatedTask);
     } catch (e) {

@@ -1,6 +1,6 @@
 import { db } from 'db';
 import { eq } from 'drizzle-orm';
-import { type TTaskId, type TInsertTask, tasks } from 'db/schema';
+import { type TTaskId, type TInsertTask, tasks, TSelectTask } from 'db/schema';
 
 class TasksService {
   async create(task: TInsertTask) {
@@ -17,10 +17,7 @@ class TasksService {
     return task;
   }
 
-  async update(task: TInsertTask) {
-    if (!task.id) {
-      throw new Error('set id');
-    }
+  async update(task: TSelectTask) {
     const updatedTask = await db
       .update(tasks)
       .set(task)
