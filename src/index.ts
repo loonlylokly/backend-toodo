@@ -8,10 +8,6 @@ import express, {
 import { zodMiddleware } from 'middleware/zod.middleware.ts';
 import router from 'router';
 
-db.select()
-  .from(tasks)
-  .then((allTasks) => console.log(allTasks));
-
 const PORT = 5000;
 
 const app: Application = express();

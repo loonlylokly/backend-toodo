@@ -5,7 +5,7 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 export const tasks = sqliteTable('tasks', {
   id: integer('id').primaryKey({ autoIncrement: true }).notNull().unique(),
   text: text('text').notNull(),
-  datetime: integer('datetime', { mode: 'timestamp_ms' })
+  datetime: text('datetime')
     .notNull()
     .default(sql`current_timestamp`),
 });

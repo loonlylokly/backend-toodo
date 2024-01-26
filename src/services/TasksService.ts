@@ -13,9 +13,6 @@ class TasksService {
     return allTasks;
   }
   async getOne(id: TTaskId) {
-    if (!id) {
-      throw new Error('set id');
-    }
     const task = await db.select().from(tasks).where(eq(tasks.id, id));
     return task;
   }
@@ -33,9 +30,6 @@ class TasksService {
   }
 
   async delete(id: TTaskId) {
-    if (!id) {
-      throw new Error('set id');
-    }
     const task = await db.delete(tasks).where(eq(tasks.id, id)).returning();
     return task;
   }
