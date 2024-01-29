@@ -1,6 +1,12 @@
 import { db } from 'db';
-import { eq } from 'drizzle-orm';
-import { type TTaskId, type TInsertTask, tasks, TSelectTask } from 'db/schema';
+import { eq, like } from 'drizzle-orm';
+import {
+  type TTaskId,
+  type TInsertTask,
+  tasks,
+  TSelectTask,
+  TTaskText,
+} from 'db/schema';
 
 class TasksService {
   async create(task: TInsertTask) {
@@ -8,8 +14,11 @@ class TasksService {
     return createdTask;
   }
 
-  async getAll() {
-    const allTasks = await db.select().from(tasks);
+  async getAll(search: TTaskText) {
+    const allTasks = await db
+      .select()
+      .from(tasks)
+      .where(like(tasks.text, `%${search}%`));
     return allTasks;
   }
   async getOne(id: TTaskId) {

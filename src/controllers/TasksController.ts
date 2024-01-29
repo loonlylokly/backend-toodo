@@ -1,4 +1,9 @@
-import { insertTaskSchema, requestSchema, selectTaskSchema } from 'db/schema';
+import {
+  insertTaskSchema,
+  requestSchemaId,
+  requestSchemaText,
+  selectTaskSchema,
+} from 'db/schema';
 import { type Request, Response } from 'express';
 import TasksService from 'services/TasksService';
 
@@ -16,7 +21,9 @@ class TaskController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const tasks = await TasksService.getAll();
+      const tasks = await TasksService.getAll(
+        requestSchemaText.parse({ text: req.query.search }).text
+      );
       return res.json(tasks);
     } catch (e) {
       console.log(e);
@@ -26,7 +33,7 @@ class TaskController {
   async getOne(req: Request, res: Response) {
     try {
       const id = Number.parseInt(req.params.id);
-      const task = await TasksService.getOne(requestSchema.parse({ id }).id);
+      const task = await TasksService.getOne(requestSchemaId.parse({ id }).id);
       return res.json(task);
     } catch (e) {
       console.log(e);
@@ -47,7 +54,7 @@ class TaskController {
   async delete(req: Request, res: Response) {
     try {
       const id = Number.parseInt(req.params.id);
-      const task = await TasksService.delete(requestSchema.parse({ id }).id);
+      const task = await TasksService.delete(requestSchemaId.parse({ id }).id);
       return res.json(task);
     } catch (e) {
       console.log(e);
