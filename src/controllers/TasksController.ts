@@ -1,36 +1,64 @@
-import { insertTaskSchema, requestSchema } from 'db/schema';
+import {
+  insertTaskSchema,
+  requestSchemaId,
+  requestSchemaText,
+  selectTaskSchema,
+} from 'db/schema';
 import { type Request, Response } from 'express';
 import TasksService from 'services/TasksService';
 
 class TaskController {
   async create(req: Request, res: Response) {
-    const task = await TasksService.create(insertTaskSchema.parse(req.body));
-    res.json(task);
+    try {
+      const taskCreated = await TasksService.create(
+        insertTaskSchema.parse(req.body)
+      );
+      res.json(taskCreated);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async getAll(req: Request, res: Response) {
-    console.log(req.url);
-    const tasks = await TasksService.getAll();
-    return res.json(tasks);
+    try {
+      const tasks = await TasksService.getAll(
+        requestSchemaText.parse({ text: req.query.search }).text
+      );
+      return res.json(tasks);
+    } catch (e) {
+      console.log(e);
+    }
   }
+
   async getOne(req: Request, res: Response) {
-    console.log(req.url);
-    const task = await TasksService.getOne(
-      requestSchema.parse(req.params.id).id
-    );
-    return res.json(task);
+    try {
+      const id = Number.parseInt(req.params.id);
+      const task = await TasksService.getOne(requestSchemaId.parse({ id }).id);
+      return res.json(task);
+    } catch (e) {
+      console.log(e);
+    }
   }
+
   async update(req: Request, res: Response) {
-    const updatedTask = await TasksService.update(
-      insertTaskSchema.parse(req.body)
-    );
-    return res.json(updatedTask);
+    try {
+      const updatedTask = await TasksService.update(
+        selectTaskSchema.parse(req.body)
+      );
+      return res.json(updatedTask);
+    } catch (e) {
+      console.log(e);
+    }
   }
+
   async delete(req: Request, res: Response) {
-    const task = await TasksService.delete(
-      requestSchema.parse(req.params.id).id
-    );
-    return res.json(task);
+    try {
+      const id = Number.parseInt(req.params.id);
+      const task = await TasksService.delete(requestSchemaId.parse({ id }).id);
+      return res.json(task);
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 
